@@ -5486,33 +5486,33 @@ public:
     if (!FD)
       return;
 
-    const auto *TA = FD->getAttr<TargetAttr>();
-    if (TA == nullptr)
-      return;
+    // const auto *TA = FD->getAttr<TargetAttr>();
+    // if (TA == nullptr)
+    //   return;
 
-    ParsedTargetAttr Attr = TA->parse();
-    if (Attr.BranchProtection.empty())
-      return;
+    // ParsedTargetAttr Attr = TA->parse();
+    // if (Attr.BranchProtection.empty())
+    //   return;
 
-    TargetInfo::BranchProtectionInfo BPI;
-    StringRef Error;
-    (void)CGM.getTarget().validateBranchProtection(Attr.BranchProtection,
-                                                   BPI, Error);
-    assert(Error.empty());
+    // TargetInfo::BranchProtectionInfo BPI;
+    // StringRef Error;
+    // (void)CGM.getTarget().validateBranchProtection(Attr.BranchProtection,
+    //                                                BPI, Error);
+    // assert(Error.empty());
 
-    auto *Fn = cast<llvm::Function>(GV);
-    static const char *SignReturnAddrStr[] = {"none", "non-leaf", "all"};
-    Fn->addFnAttr("sign-return-address", SignReturnAddrStr[static_cast<int>(BPI.SignReturnAddr)]);
+    // auto *Fn = cast<llvm::Function>(GV);
+    // static const char *SignReturnAddrStr[] = {"none", "non-leaf", "all"};
+    // Fn->addFnAttr("sign-return-address", SignReturnAddrStr[static_cast<int>(BPI.SignReturnAddr)]);
 
-    if (BPI.SignReturnAddr != LangOptions::SignReturnAddressScopeKind::None) {
-      Fn->addFnAttr("sign-return-address-key",
-                    BPI.SignKey == LangOptions::SignReturnAddressKeyKind::AKey
-                        ? "a_key"
-                        : "b_key");
-    }
+    // if (BPI.SignReturnAddr != LangOptions::SignReturnAddressScopeKind::None) {
+    //   Fn->addFnAttr("sign-return-address-key",
+    //                 BPI.SignKey == LangOptions::SignReturnAddressKeyKind::AKey
+    //                     ? "a_key"
+    //                     : "b_key");
+    // }
 
-    Fn->addFnAttr("branch-target-enforcement",
-                  BPI.BranchTargetEnforcement ? "true" : "false");
+    // Fn->addFnAttr("branch-target-enforcement",
+    //               BPI.BranchTargetEnforcement ? "true" : "false");
   }
 };
 

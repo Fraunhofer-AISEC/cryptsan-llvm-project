@@ -24,6 +24,8 @@
 #include "llvm/IR/LLVMRemarkStreamer.h"
 #include "llvm/IR/LegacyPassManager.h"
 #include "llvm/IR/PassManager.h"
+#include "llvm/CodeGen/Passes.h"
+#include "llvm/CodeGen/TargetPassConfig.h"
 #include "llvm/IR/Verifier.h"
 #include "llvm/LTO/LTO.h"
 #include "llvm/MC/SubtargetFeature.h"
@@ -365,6 +367,8 @@ static void runOldPMPasses(const Config &Conf, Module &Mod, TargetMachine *TM,
     PMB.EnablePGOCSInstrUse = true;
     PMB.PGOInstrUse = Conf.CSIRProfile;
   }
+  passes.add(createCryptSanLegacyPass(TM));
+
   if (IsThinLTO)
     PMB.populateThinLTOPassManager(passes);
   else

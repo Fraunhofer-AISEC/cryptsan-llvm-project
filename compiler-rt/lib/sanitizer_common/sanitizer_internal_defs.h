@@ -447,6 +447,9 @@ using namespace __sanitizer;
 namespace __hwasan {
 using namespace __sanitizer;
 }
+namespace __cryptsan {
+using namespace __sanitizer;
+}
 namespace __memprof {
 using namespace __sanitizer;
 }

@@ -84,6 +84,8 @@
 #include "llvm/Transforms/Utils/NameAnonGlobals.h"
 #include "llvm/Transforms/Utils/SymbolRewriter.h"
 #include "llvm/Transforms/Utils/UniqueInternalLinkageNames.h"
+#include "llvm/CodeGen/CryptSan.h"
+
 #include <memory>
 using namespace clang;
 using namespace llvm;

@@ -767,6 +767,9 @@ SanitizerArgs::SanitizerArgs(const ToolChain &TC,
                        TC.getTriple().isOSDarwin());
 
   ImplicitCfiRuntime = TC.getTriple().isAndroid();
+  if (AllAddedKinds & SanitizerKind::CryptSan) {
+    CryptSanRuntime = TC.getTriple().isOSLinux() || TC.getTriple().isOSDarwin();
+  }
 
   if (AllAddedKinds & SanitizerKind::Address) {
     NeedPIE |= TC.getTriple().isOSFuchsia();

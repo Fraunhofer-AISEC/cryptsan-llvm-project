@@ -1746,12 +1746,12 @@ void Clang::AddAArch64TargetArgs(const ArgList &Args,
       IndirectBranches = PBP.BranchTargetEnforcement;
     }
 
-    CmdArgs.push_back(
-        Args.MakeArgString(Twine("-msign-return-address=") + Scope));
-    CmdArgs.push_back(
-        Args.MakeArgString(Twine("-msign-return-address-key=") + Key));
-    if (IndirectBranches)
-      CmdArgs.push_back("-mbranch-target-enforce");
+    // CmdArgs.push_back(
+    //     Args.MakeArgString(Twine("-msign-return-address=") + Scope));
+    // CmdArgs.push_back(
+    //     Args.MakeArgString(Twine("-msign-return-address-key=") + Key));
+    // if (IndirectBranches)
+    //   CmdArgs.push_back("-mbranch-target-enforce");
   }
 
   // Handle -msve_vector_bits=<bits>

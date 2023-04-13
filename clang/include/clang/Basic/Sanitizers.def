@@ -49,6 +49,9 @@ SANITIZER("pointer-subtract", PointerSubtract)
 // Kernel AddressSanitizer (KASan)
 SANITIZER("kernel-address", KernelAddress)
 
+// CryptSan
+SANITIZER("cryptsan", CryptSan)
+
 // Hardware-assisted AddressSanitizer
 SANITIZER("hwaddress", HWAddress)
 

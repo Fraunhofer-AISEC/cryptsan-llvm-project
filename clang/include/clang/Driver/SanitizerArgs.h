@@ -42,6 +42,7 @@ class SanitizerArgs {
   bool AsanGlobalsDeadStripping = false;
   bool AsanUseOdrIndicator = false;
   bool AsanInvalidPointerCmp = false;
+  bool CryptSanRuntime = false;
   bool AsanInvalidPointerSub = false;
   std::string HwasanAbi;
   bool LinkRuntimes = true;
@@ -85,7 +86,7 @@ public:
   bool needsCfiDiagRt() const;
   bool needsStatsRt() const { return Stats; }
   bool needsScudoRt() const { return Sanitizers.has(SanitizerKind::Scudo); }
-
+  bool needsCryptSanRt() const {return CryptSanRuntime; }
   bool requiresPIE() const;
   bool needsUnwindTables() const;
   bool needsLTO() const;

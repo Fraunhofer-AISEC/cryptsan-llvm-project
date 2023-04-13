@@ -1,0 +1,24 @@
+version: '3'
+
+
+services:
+  llvm-builder:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+      - custom.env
+    cap_add:
+      - SYS_PTRACE
+    security_opt:
+      - seccomp=unconfined
+    tmpfs:
+      - /mnt/benchmark-sb
+    volumes:
+      - ../../../../llvm:/home/builder/cryptsan/llvm
+      - ../../../../clang:/home/builder/cryptsan/clang
+      - ../../../../compiler-rt:/home/builder/cryptsan/compiler-rt
+      - ../../../../lld:/home/builder/cryptsan/lld
+      - ../../../../softbound-tests:/home/builder/cryptsan/cryptsan-tests
+      - ${CCACHE_DIR-~/.ccache}:/home/builder/.ccache

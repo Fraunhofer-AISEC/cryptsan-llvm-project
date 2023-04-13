@@ -807,6 +807,8 @@ collectSanitizerRuntimes(const ToolChain &TC, const ArgList &Args,
       SharedRuntimes.push_back("tsan");
     if (SanArgs.needsHwasanRt() && SanArgs.linkRuntimes())
       SharedRuntimes.push_back("hwasan");
+    if (SanArgs.needsCryptSanRt())
+      SharedRuntimes.push_back("cryptsan");
   }
 
   // The stats_client library is also statically linked into DSOs.
@@ -818,7 +820,9 @@ collectSanitizerRuntimes(const ToolChain &TC, const ArgList &Args,
     // Don't link static runtimes into DSOs.
     return;
   }
-
+  if (SanArgs.needsCryptSanRt()) {
+   StaticRuntimes.push_back("cryptsan");
+  }
   // Each static runtime that has a DSO counterpart above is excluded below,
   // but runtimes that exist only as static are not affected by needsSharedRt.
 

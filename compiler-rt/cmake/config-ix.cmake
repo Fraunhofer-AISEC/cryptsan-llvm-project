@@ -68,7 +68,8 @@ check_cxx_compiler_flag(-fvisibility=hidden  COMPILER_RT_HAS_FVISIBILITY_HIDDEN_
 check_cxx_compiler_flag(-frtti               COMPILER_RT_HAS_FRTTI_FLAG)
 check_cxx_compiler_flag(-fno-rtti            COMPILER_RT_HAS_FNO_RTTI_FLAG)
 check_cxx_compiler_flag("-Werror -fno-function-sections" COMPILER_RT_HAS_FNO_FUNCTION_SECTIONS_FLAG)
-check_cxx_compiler_flag(-std=c++14           COMPILER_RT_HAS_STD_CXX14_FLAG)
+#check_cxx_compiler_flag(-std=c++14           COMPILER_RT_HAS_STD_CXX14_FLAG)
+check_cxx_compiler_flag(-std=c++11           COMPILER_RT_HAS_STD_CXX11_FLAG)
 check_cxx_compiler_flag(-ftls-model=initial-exec COMPILER_RT_HAS_FTLS_MODEL_INITIAL_EXEC)
 check_cxx_compiler_flag(-fno-lto             COMPILER_RT_HAS_FNO_LTO_FLAG)
 check_cxx_compiler_flag(-fno-profile-generate COMPILER_RT_HAS_FNO_PROFILE_GENERATE_FLAG)
@@ -78,7 +79,7 @@ check_cxx_compiler_flag("-Werror -msse3" COMPILER_RT_HAS_MSSE3_FLAG)
 check_cxx_compiler_flag("-Werror -msse4.2"   COMPILER_RT_HAS_MSSE4_2_FLAG)
 check_cxx_compiler_flag(--sysroot=.          COMPILER_RT_HAS_SYSROOT_FLAG)
 check_cxx_compiler_flag("-Werror -mcrc"      COMPILER_RT_HAS_MCRC_FLAG)
-check_cxx_compiler_flag(-fno-partial-inlining COMPILER_RT_HAS_FNO_PARTIAL_INLINING_FLAG)
+#check_cxx_compiler_flag(-fno-partial-inlining COMPILER_RT_HAS_FNO_PARTIAL_INLINING_FLAG)
 
 if(NOT WIN32 AND NOT CYGWIN)
   # MinGW warns if -fvisibility-inlines-hidden is used.
@@ -157,7 +158,7 @@ check_library_exists(stdc++ __cxa_throw "" COMPILER_RT_HAS_LIBSTDCXX)
 
 # Linker flags.
 check_linker_flag("-Wl,-z,text" COMPILER_RT_HAS_Z_TEXT)
-check_linker_flag("-fuse-ld=lld" COMPILER_RT_HAS_FUSE_LD_LLD_FLAG)
+#check_linker_flag("-fuse-ld=lld" COMPILER_RT_HAS_FUSE_LD_LLD_FLAG)
 
 set(VERS_COMPAT_OPTION "-Wl,-z,gnu-version-script-compat")
 check_linker_flag("${VERS_COMPAT_OPTION}" COMPILER_RT_HAS_GNU_VERSION_SCRIPT_COMPAT)
@@ -235,18 +236,18 @@ endmacro()
 
 # Returns CFLAGS that should be used to run tests for the
 # specific apple platform and architecture.
-function(get_test_cflags_for_apple_platform platform arch cflags_out)
-  is_valid_apple_platform("${platform}" is_valid_platform)
-  if (NOT is_valid_platform)
-    message(FATAL_ERROR "\"${platform}\" is not a valid apple platform")
-  endif()
-  set(test_cflags "")
-  get_target_flags_for_arch(${arch} test_cflags)
-  list(APPEND test_cflags ${DARWIN_${platform}_CFLAGS})
-  string(REPLACE ";" " " test_cflags_str "${test_cflags}")
-  string(APPEND test_cflags_str "${COMPILER_RT_TEST_COMPILER_CFLAGS}")
-  set(${cflags_out} "${test_cflags_str}" PARENT_SCOPE)
-endfunction()
+#function(get_test_cflags_for_apple_platform platform arch cflags_out)
+#  is_valid_apple_platform("${platform}" is_valid_platform)
+#  if (NOT is_valid_platform)
+#    message(FATAL_ERROR "\"${platform}\" is not a valid apple platform")
+#  endif()
+#  set(test_cflags "")
+#  get_target_flags_for_arch(${arch} test_cflags)
+#  list(APPEND test_cflags ${DARWIN_${platform}_CFLAGS})
+#  string(REPLACE ";" " " test_cflags_str "${test_cflags}")
+#  string(APPEND test_cflags_str "${COMPILER_RT_TEST_COMPILER_CFLAGS}")
+#  set(${cflags_out} "${test_cflags_str}" PARENT_SCOPE)
+#endfunction()
 
 function(get_capitalized_apple_platform platform platform_capitalized)
   # TODO(dliew): Remove uses of this function. It exists to preserve needlessly complex
@@ -260,16 +261,16 @@ function(get_capitalized_apple_platform platform platform_capitalized)
   set(${platform_capitalized} "${platform_upper_capitalized}" PARENT_SCOPE)
 endfunction()
 
-function(is_valid_apple_platform platform is_valid_out)
-  set(is_valid FALSE)
-  if ("${platform}" STREQUAL "")
-    message(FATAL_ERROR "platform cannot be empty")
-  endif()
-  if ("${platform}" MATCHES "^(osx|((ios|watchos|tvos)(sim)?))$")
-    set(is_valid TRUE)
-  endif()
-  set(${is_valid_out} ${is_valid} PARENT_SCOPE)
-endfunction()
+#function(is_valid_apple_platform platform is_valid_out)
+#  set(is_valid FALSE)
+#  if ("${platform}" STREQUAL "")
+#    message(FATAL_ERROR "platform cannot be empty")
+#  endif()
+#  if ("${platform}" MATCHES "^(osx|((ios|watchos|tvos)(sim)?))$")
+#    set(is_valid TRUE)
+#  endif()
+#  set(${is_valid_out} ${is_valid} PARENT_SCOPE)
+#endfunction()
 
 set(ARM64 aarch64)
 set(ARM32 arm armhf)
@@ -282,23 +283,24 @@ set(PPC32 powerpc)
 set(PPC64 powerpc64 powerpc64le)
 set(RISCV32 riscv32)
 set(RISCV64 riscv64)
-set(S390X s390x)
-set(SPARC sparc)
+#set(S390X s390x)
+#set(SPARC sparc)
 set(SPARCV9 sparcv9)
 set(WASM32 wasm32)
 set(WASM64 wasm64)
 set(VE ve)
 
 if(APPLE)
-  set(ARM64 arm64)
+  set(ARM64 arm64e)
   set(ARM32 armv7 armv7s armv7k)
   set(X86_64 x86_64 x86_64h)
 endif()
 
 set(ALL_SANITIZER_COMMON_SUPPORTED_ARCH ${X86} ${X86_64} ${PPC64} ${RISCV64}
-    ${ARM32} ${ARM64} ${MIPS32} ${MIPS64} ${S390X} ${SPARC} ${SPARCV9})
+    ${ARM32} ${ARM64} ${MIPS32} ${MIPS64} ${S390X})
+set(ALL_CRYPTSAN_SUPPORTED_ARCH ${ARM64})
 set(ALL_ASAN_SUPPORTED_ARCH ${X86} ${X86_64} ${ARM32} ${ARM64} ${RISCV64}
-    ${MIPS32} ${MIPS64} ${PPC64} ${S390X} ${SPARC} ${SPARCV9})
+    ${MIPS32} ${MIPS64} ${PPC64} ${S390X})
 set(ALL_CRT_SUPPORTED_ARCH ${X86} ${X86_64} ${ARM32} ${ARM64} ${RISCV32} ${RISCV64} ${VE})
 set(ALL_DFSAN_SUPPORTED_ARCH ${X86_64} ${MIPS64} ${ARM64})
 
@@ -542,9 +544,9 @@ if(APPLE)
   list_intersect(DFSAN_SUPPORTED_ARCH
     ALL_DFSAN_SUPPORTED_ARCH
     SANITIZER_COMMON_SUPPORTED_ARCH)
-  list_intersect(GWP_ASAN_SUPPORTED_ARCH
-    ALL_GWP_ASAN_SUPPORTED_ARCH
-    SANITIZER_COMMON_SUPPORTED_ARCH)
+  #list_intersect(GWP_ASAN_SUPPORTED_ARCH
+  #  ALL_GWP_ASAN_SUPPORTED_ARCH
+  #  SANITIZER_COMMON_SUPPORTED_ARCH)
   list_intersect(LSAN_SUPPORTED_ARCH
     ALL_LSAN_SUPPORTED_ARCH
     SANITIZER_COMMON_SUPPORTED_ARCH)
@@ -562,6 +564,9 @@ if(APPLE)
     SANITIZER_COMMON_SUPPORTED_ARCH)
   list_intersect(TSAN_SUPPORTED_ARCH
     ALL_TSAN_SUPPORTED_ARCH
+    SANITIZER_COMMON_SUPPORTED_ARCH)
+  list_intersect(CRYPTSAN_SUPPORTED_ARCH
+    ALL_CRYPTSAN_SUPPORTED_ARCH
     SANITIZER_COMMON_SUPPORTED_ARCH)
   list_intersect(UBSAN_SUPPORTED_ARCH
     ALL_UBSAN_SUPPORTED_ARCH
@@ -617,7 +622,8 @@ else()
   filter_available_targets(XRAY_SUPPORTED_ARCH ${ALL_XRAY_SUPPORTED_ARCH})
   filter_available_targets(SHADOWCALLSTACK_SUPPORTED_ARCH
     ${ALL_SHADOWCALLSTACK_SUPPORTED_ARCH})
-  filter_available_targets(GWP_ASAN_SUPPORTED_ARCH ${ALL_GWP_ASAN_SUPPORTED_ARCH})
+  filter_available_targets(CRYPTSAN_SUPPORTED_ARCH ${ALL_CRYPTSAN_SUPPORTED_ARCH})
+  #filter_available_targets(GWP_ASAN_SUPPORTED_ARCH ${ALL_GWP_ASAN_SUPPORTED_ARCH})
 endif()
 
 if (MSVC)
@@ -640,7 +646,7 @@ if(COMPILER_RT_SUPPORTED_ARCH)
 endif()
 message(STATUS "Compiler-RT supported architectures: ${COMPILER_RT_SUPPORTED_ARCH}")
 
-set(ALL_SANITIZERS asan;dfsan;msan;hwasan;tsan;safestack;cfi;scudo;ubsan_minimal;gwp_asan)
+set(ALL_SANITIZERS asan;dfsan;msan;hwasan;tsan;safestack;cfi;scudo;ubsan_minimal;cryptsan)
 set(COMPILER_RT_SANITIZERS_TO_BUILD all CACHE STRING
     "sanitizers to build if supported on the target (all;${ALL_SANITIZERS})")
 list_replace(COMPILER_RT_SANITIZERS_TO_BUILD all "${ALL_SANITIZERS}")
@@ -653,6 +659,14 @@ if (SANITIZER_COMMON_SUPPORTED_ARCH AND NOT LLVM_USE_SANITIZER AND
 else()
   set(COMPILER_RT_HAS_SANITIZER_COMMON FALSE)
 endif()
+
+if (COMPILER_RT_HAS_SANITIZER_COMMON AND CRYPTSAN_SUPPORTED_ARCH AND
+    OS_NAME MATCHES "Linux|Darwin")
+  set(COMPILER_RT_HAS_CRYPTSAN TRUE)
+else()
+  set(COMPILER_RT_HAS_CRYPTSAN FALSE)
+endif()
+message(STATUS "COMPILER_RT_HAS_CRYPTSAN ${COMPILER_RT_HAS_CRYPTSAN}")
 
 if (COMPILER_RT_HAS_SANITIZER_COMMON)
   set(COMPILER_RT_HAS_INTERCEPTION TRUE)
@@ -744,11 +758,12 @@ else()
 endif()
 
 if (COMPILER_RT_HAS_SANITIZER_COMMON AND SAFESTACK_SUPPORTED_ARCH AND
-    OS_NAME MATCHES "Linux|FreeBSD|NetBSD")
+    OS_NAME MATCHES "Linux|FreeBSD|NetBSD|Darwin")
   set(COMPILER_RT_HAS_SAFESTACK TRUE)
 else()
   set(COMPILER_RT_HAS_SAFESTACK FALSE)
 endif()
+message(STATUS "Config-ix: COMPILER_RT_HAS_SAFESTACK: ${COMPILER_RT_HAS_SAFESTACK}")
 
 if (COMPILER_RT_HAS_SANITIZER_COMMON AND CFI_SUPPORTED_ARCH)
   set(COMPILER_RT_HAS_CFI TRUE)
@@ -797,10 +812,10 @@ endif()
 # calling malloc on first use.
 # TODO(hctim): Enable this on Android again. Looks like it's causing a SIGSEGV
 # for Scudo and GWP-ASan, further testing needed.
-if (COMPILER_RT_HAS_SANITIZER_COMMON AND GWP_ASAN_SUPPORTED_ARCH AND
-    OS_NAME MATCHES "Linux")
-  set(COMPILER_RT_HAS_GWP_ASAN TRUE)
-else()
-  set(COMPILER_RT_HAS_GWP_ASAN FALSE)
-endif()
-pythonize_bool(COMPILER_RT_HAS_GWP_ASAN)
+#if (COMPILER_RT_HAS_SANITIZER_COMMON AND GWP_ASAN_SUPPORTED_ARCH AND
+#    OS_NAME MATCHES "Linux")
+#  set(COMPILER_RT_HAS_GWP_ASAN TRUE)
+#else()
+#  set(COMPILER_RT_HAS_GWP_ASAN FALSE)
+#endif()
+#pythonize_bool(COMPILER_RT_HAS_GWP_ASAN)

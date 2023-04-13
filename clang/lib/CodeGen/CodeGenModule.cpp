@@ -631,22 +631,22 @@ void CodeGenModule::Release() {
                               1);
   }
 
-  if (Arch == llvm::Triple::aarch64 || Arch == llvm::Triple::aarch64_32 ||
-      Arch == llvm::Triple::aarch64_be) {
-    getModule().addModuleFlag(llvm::Module::Error,
-                              "branch-target-enforcement",
-                              LangOpts.BranchTargetEnforcement);
+  // if (Arch == llvm::Triple::aarch64 || Arch == llvm::Triple::aarch64_32 ||
+  //     Arch == llvm::Triple::aarch64_be) {
+  //   getModule().addModuleFlag(llvm::Module::Error,
+  //                             "branch-target-enforcement",
+  //                             LangOpts.BranchTargetEnforcement);
 
-    getModule().addModuleFlag(llvm::Module::Error, "sign-return-address",
-                              LangOpts.hasSignReturnAddress());
+  //   getModule().addModuleFlag(llvm::Module::Error, "sign-return-address",
+  //                             LangOpts.hasSignReturnAddress());
 
-    getModule().addModuleFlag(llvm::Module::Error, "sign-return-address-all",
-                              LangOpts.isSignReturnAddressScopeAll());
+  //   getModule().addModuleFlag(llvm::Module::Error, "sign-return-address-all",
+  //                             LangOpts.isSignReturnAddressScopeAll());
 
-    getModule().addModuleFlag(llvm::Module::Error,
-                              "sign-return-address-with-bkey",
-                              !LangOpts.isSignReturnAddressWithAKey());
-  }
+  //   getModule().addModuleFlag(llvm::Module::Error,
+  //                             "sign-return-address-with-bkey",
+  //                             !LangOpts.isSignReturnAddressWithAKey());
+  // }
 
   if (!CodeGenOpts.MemoryProfileOutput.empty()) {
     llvm::LLVMContext &Ctx = TheModule.getContext();
